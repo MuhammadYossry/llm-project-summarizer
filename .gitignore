@@ -1,0 +1,103 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.coverage
+
+# Python Profiling
+gmon.out
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Poetry specific
+.poetry-cache/
+
+# FastAPI auto-generated files
+app.db
+app.sqlite
+*.db
+*.sqlite
+
+# Pyenv
+.python-version
+
+# Virtualenv
+# Virtualenv using venv
+venv/
+env/
+
+# PyCharm
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+
+# Logs
+logs
+*.log
+
+# AWS SAM
+.sam/
+
+# Docker
+docker-compose.override.yml
+.Dockerfile
+.dockerignore
+
+# Environment variables
+.env
+.env.*
+
+# VSCode settings
+# .vscode/
+
+# Project/Path specific ignores can be added below this line
+# others/
+Currently Doing.md
