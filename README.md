@@ -68,23 +68,23 @@ pip install -e .
 ### Basic Usage
 ```bash
 # Using pip installed version
-project-summarizer /path/to/project
+llm-project-summarizer /path/to/project
 
 # Custom output file
-project-summarizer /path/to/project -o custom_summary.md
+llm-project-summarizer /path/to/project -o custom_summary.md
 
 # Exclude patterns
-project-summarizer /path/to/project --exclude "vendor/*" --exclude "*.test.go"
+llm-project-summarizer /path/to/project --exclude "vendor/*" --exclude "*.test.go"
 ```
 
 ### Using Poetry
 ```bash
 # Install and run using poetry
 poetry install
-poetry run project-summarizer /path/to/project
+poetry run llm-project-summarizer/path/to/project
 
 # Run with options
-poetry run project-summarizer /path/to/project -o summary.md --exclude "vendor/*"
+poetry run llm-project-summarizer /path/to/project -o summary.md --exclude "vendor/*"
 ```
 
 ### With Configuration File
@@ -99,12 +99,12 @@ output: "project_summary.md"
 
 Use the config:
 ```bash
-project-summarizer /path/to/project --config .summarizer.yaml
+llm-project-summarizer /path/to/project --config .summarizer.yaml
 ```
 
 ### Command Line Options
 ```bash
-project-summarizer --help
+llm-project-summarizer--help
 
 Options:
   --output, -o PATH    Output file path [default: project_summary.md]
