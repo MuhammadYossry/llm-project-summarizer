@@ -117,114 +117,368 @@ Options:
 The tool employs language-specific parsers to analyze source code. For Go, it uses pattern matching to identify packages, interfaces, and implementations. For Python, it utilizes the Abstract Syntax Tree (AST) to extract classes, functions, and their relationships. The parsed information is then organized into a hierarchical structure optimized for LLM understanding.
 
 ## Examples
-
-Input project structure:
+for example running the tool against this Python project project
+`llm-project-summarizer llm-project-summarizer -o summary.md`
+will output into `summary.md`
 ```
-myproject/
-├── cmd/
-│   └── server/
-│       └── main.go
-├── internal/
-│   ├── api/
-│   │   └── handlers.go
-│   └── service/
-│       └── users.go
-```
+# Project Summary
 
-## Project Generated Summary
+## Project Architecture
+This is a Python project with the following structure:
+
+### Package Structure
+
+#### llm_project_summarizer/__init__.py
+
+#### llm_project_summarizer/cli.py
+
+Symbols:
+
+  function: def load_config(config_path)
+    Load configuration from YAML file
+
+  function: @...
+@...
+@...
+@...
+@...
+def main(project_path, output, exclude, config)
+    Analyze and summarize a code project for LLM consumption.
+
+#### llm_project_summarizer/parsers/base.py
+
+Symbols:
+
+  class: @dataclass
+class CodeSymbol
+    Represents a code symbol (function, class, interface, etc.)
+
+  class: @dataclass
+class FileSymbols
+    Contains all symbols found in a single file
+
+  class: class LanguageParser(ABC)
+    Abstract base class for language-specific parsers
+
+  function: def _sanitize_docstring(self, docstring)
+    Cleans up a docstring for consistent formatting
+
+  function: @abstractmethod
+def can_parse(self, filename)
+    Determines if this parser can handle the given file
+
+  function: @abstractmethod
+def parse_file(self, filepath)
+    Parses a file and returns its symbols
+
+#### llm_project_summarizer/parsers/go.py
+
+Symbols:
+
+  class: class GoParser(LanguageParser)
+    Parses Go source files to extract symbols and relationships
+
+  function: def _extract_docstring(self, content, start_pos)
+    Extract Go-style documentation comments
+
+  function: def _extract_functions(self, content)
+    Extract function declarations from Go source
+
+  function: def _extract_imports(self, content)
+    Extract all imports from Go source
+
+  function: def _extract_interfaces(self, content)
+    Extract interface declarations from Go source
+
+  function: def _extract_package(self, content)
+    Extract the package name from Go source
+
+  function: def _extract_types(self, content)
+    Extract type declarations from Go source
+
+  function: def can_parse(self, filename)
+
+  function: def parse_file(self, filepath)
+
+#### llm_project_summarizer/parsers/python.py
+
+Symbols:
+
+  class: class PythonParser(LanguageParser)
+    Parses Python source files using the ast module
+
+  function: def _extract_imports(self, tree)
+    Extract all imports from an AST
+
+  function: def _format_arguments(self, args)
+    Format function arguments as a string
+
+  function: def _format_decorators(self, decorators)
+    Format decorators as strings
+
+  function: def _format_expression(self, node)
+    Format an AST expression node as a string
+
+  function: def _process_async_function(self, node)
+    Process an async function definition
+
+  function: def _process_class(self, node)
+    Process a class definition
+
+  function: def _process_function(self, node)
+    Process a function definition
+
+  function: def can_parse(self, filename)
+
+  function: def parse_file(self, filepath)
+
+#### llm_project_summarizer/summarizer.py
+
+Symbols:
+
+  class: class ProjectSummarizer
+    Main class for summarizing a project's structure
+
+  function: def __init__(self)
+
+  function: def summarize_project(self, project_path, exclusions)
+    Summarize all supported files in the project
+
+  function: def write_summary(self, project_path, results, output_file)
+    Write the project summary to a file
+
+#### tests/__init__.py
+
+#### tests/conftest.py
+
+Symbols:
+
+  function: @pytest.fixture
+def sample_go_file(tmp_path)
+    Create a sample Go file for testing
+
+  function: @pytest.fixture
+def sample_project(tmp_path)
+    Create a sample project structure
+
+  function: @pytest.fixture
+def sample_python_file(tmp_path)
+    Create a sample Python file for testing
+
+#### tests/test_cli.py
+
+Symbols:
+
+  function: def test_cli_basic_usage(sample_project)
+
+  function: def test_cli_custom_output(sample_project, tmp_path)
+
+  function: def test_cli_handles_config_file(sample_project, tmp_path)
+
+  function: def test_cli_invalid_project_path()
+
+  function: def test_cli_with_exclusions(sample_project)
+
+#### tests/test_parsers.py
+
+Symbols:
+
+  function: def test_go_parser_can_parse()
+
+  function: def test_go_parser_extracts_functions(sample_go_file)
+
+  function: def test_go_parser_extracts_imports(sample_go_file)
+
+  function: def test_go_parser_extracts_interfaces(sample_go_file)
+
+  function: def test_go_parser_extracts_package(sample_go_file)
+
+  function: def test_go_parser_extracts_structs(sample_go_file)
+
+  function: def test_python_parser_can_parse()
+
+  function: def test_python_parser_extracts_classes(sample_python_file)
+
+  function: def test_python_parser_extracts_functions(sample_python_file)
+
+  function: def test_python_parser_extracts_imports(sample_python_file)
+
+  function: def test_python_parser_handles_invalid_file(tmp_path)
+
+#### tests/test_summarizer.py
+
+Symbols:
+
+  function: def test_summarizer_generates_mermaid_diagram(sample_project, tmp_path)
+
+  function: def test_summarizer_handles_empty_project(tmp_path)
+
+  function: def test_summarizer_processes_project(sample_project)
+
+  function: def test_summarizer_respects_exclusions(sample_project)
+
+  function: def test_summarizer_writes_summary(sample_project, tmp_path)
+```
+And the mermaid dependices graph
+```mermaid
+graph TD
+    llm_project_summarizer-->click
+    llm_project_summarizer-->logging
+    llm_project_summarizer-->yaml
+    llm_project_summarizer-->pathlib.Path
+    llm_project_summarizer-->typing.Optional
+    llm_project_summarizer-->summarizer.ProjectSummarizer
+    llm_project_summarizer-->os
+    llm_project_summarizer-->logging
+    llm_project_summarizer-->typing.Dict
+    llm_project_summarizer-->typing.List
+    llm_project_summarizer-->typing.Optional
+    llm_project_summarizer-->parsers.base.FileSymbols
+    llm_project_summarizer-->parsers.go.GoParser
+    llm_project_summarizer-->parsers.python.PythonParser
+    parsers-->ast
+    parsers-->logging
+    parsers-->typing.List
+    parsers-->typing.Set
+    parsers-->typing.Optional
+    parsers-->typing.Any
+    parsers-->base.LanguageParser
+    parsers-->base.FileSymbols
+    parsers-->base.CodeSymbol
+    parsers-->re
+    parsers-->typing.List
+    parsers-->typing.Optional
+    parsers-->typing.Match
+    parsers-->base.LanguageParser
+    parsers-->base.FileSymbols
+    parsers-->base.CodeSymbol
+    parsers-->abc.ABC
+    parsers-->abc.abstractmethod
+    parsers-->dataclasses.dataclass
+    parsers-->dataclasses.field
+    parsers-->typing.List
+    parsers-->typing.Optional
+    parsers-->typing.Set
+    tests-->os
+    tests-->pytest
+    tests-->pathlib.Path
+    tests-->pytest
+    tests-->llm_project_summarizer.parsers.go.GoParser
+    tests-->llm_project_summarizer.parsers.python.PythonParser
+    tests-->llm_project_summarizer.parsers.base.CodeSymbol
+    tests-->llm_project_summarizer.parsers.base.FileSymbols
+    tests-->os
+    tests-->pytest
+    tests-->pathlib.Path
+    tests-->llm_project_summarizer.summarizer.ProjectSummarizer
+    tests-->pytest
+    tests-->click.testing.CliRunner
+    tests-->llm_project_summarizer.cli.main
+```
+Running it against a Go project
+`llm-project-summarizer pdf-form-service -o summary.md`
+will result into output
+```
+# Project Summary
 
 ## Project Architecture
 This is a Go project with the following structure:
 
-### Entry Points
-- cmd/server/main.go
-
-### Package Structure
-#### api
-Key Interfaces:
-- Handler: HTTP request handler interface
-- Service: Business logic interface
-
-### Dependencies
-```mermaid
-graph TD
-    api-->service
-    main-->api
-```
-Here's an example analyzing a mixed Python/Go microservice:
-
-Input project structure:
-```
-acme-service/
-├── api/
-│   ├── handlers/
-│   │   ├── user_handler.go
-│   │   └── auth_handler.go
-│   └── middleware/
-│       └── jwt.go
-├── services/
-│   ├── user_service.py
-│   └── auth_service.py
-└── models/
-    ├── user.go
-    └── schema.py
-```
-
-## Project Generated Summary
-## Project Architecture
-This is a mixed-language microservice using Go for API handlers and Python for business logic.
-
 ### Package Structure
 
-#### api/handlers/user_handler.go
-Package: handlers
+#### internal/file_utils/file_utils.go
+Package: file_utils
 
 Symbols:
-  interface: UserHandler
-    Methods:
-      - GetUser(id string) (*User, error)
-      - CreateUser(user *User) error
-      - UpdateUser(id string, user *User) error
 
-  struct: userHandler
-    Implements: UserHandler
-    Dependencies: UserService
+  function: func CreateFile(filePath string) (*os.File, error)
+    createFile creates a file at the given path and returns a file pointer.
 
-#### services/user_service.py
-Package: services
+  function: func GenerateUniqueFileName(baseName string)
+    generateUniqueFileName generates a unique filename for the output file.
+
+  function: func OpenFile(filePath string) (*os.File, error)
+    openFile opens the file at the given path and returns a file pointer.
+
+#### internal/file_utils/minio_utils.go
+Package: file_utils
 
 Symbols:
-  class: UserService
-    Methods:
-      - async def get_user(self, id: str) -> User
-      - async def create_user(self, user: User) -> User
-      - async def update_user(self, id: str, user: User) -> User
-    
-    Dependencies: 
-      - models.User
-      - database.Repository
 
-### Architecture Diagram
+  function: func InitAndTestMinio()
+
+  function: func UploadFileToBucket(filePath string)
+
+  function: func getEnv(key, fallback string)
+    Utils
+
+#### main.go
+Package: main
+
+Symbols:
+
+  type: type ExportFormResponse struct
+    ExportFormResponse represents the response body for the export-form endpoint.
+
+  type: type FillFormRequest struct
+    FillFormRequest represents the request body for the fill-form endpoint.
+
+  type: type FillFormResponse struct
+    FillFormResponse represents the response body for the fill-form endpoint.
+
+  function: func exportFormHandler(w http.ResponseWriter, r *http.Request)
+    exportFormHandler handles the Get request to the /export-form endpoint.
+
+  function: func fillFormHandler(w http.ResponseWriter, r *http.Request)
+    fillFormHandler handles the POST request to the /fill-form endpoint.
+
+  function: func main()
+
+  function: func validateFileName(fileName string) (string, error)
+    validateFileName checks if the given filename is allowed.
+
+#### main_test.go
+Package: main
+
+Symbols:
+
+  function: func TestFillFormHandler(t *testing.T)
+    TestFillFormHandler tests the fillFormHandler endpoint.
+```
+With the mermaid dependices graph
 ```mermaid
 graph TD
-    subgraph Go API Layer
-        UH[UserHandler]
-        AH[AuthHandler]
-        JWT[JWT Middleware]
-    end
-    
-    subgraph Python Services
-        US[UserService]
-        AS[AuthService]
-        DB[(Database)]
-    end
-    
-    UH --> US
-    AH --> AS
-    US --> DB
-    AS --> DB
-    JWT --> AS
+    main-->fmt
+    main-->log
+    main-->strings
+    main-->bytes
+    main-->net/http
+    main-->encoding/json
+    main-->github.com/pdfcpu/pdfcpu/pkg/api
+    main-->github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model
+    main-->pdf-form-service/internal/file_utils
+    main-->encoding/json
+    main-->io/ioutil
+    main-->net/http
+    main-->net/http/httptest
+    main-->os
+    main-->strings
+    main-->testing
+    file_utils-->fmt
+    file_utils-->os
+    file_utils-->time
+    file_utils-->fmt
+    file_utils-->os
+    file_utils-->time
+    file_utils-->context
+    file_utils-->log
+    file_utils-->path/filepath
+    file_utils-->net/url
+    file_utils-->github.com/minio/minio-go/v7
+    file_utils-->github.com/minio/minio-go/v7/pkg/credentials
+    templates-->json
 ```
+
 
 ## Contributing
 
