@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "llm-project-summarizer"
-version = "0.0.3"
+version = "0.0.4"
 description = "Generate LLM-friendly summaries of Python and Go codebases"
 authors = ["Yossry"]
 homepage = "https://github.com/MuhamadYossry/llm-project-summarizer"
@@ -46,14 +46,14 @@ tqdm = "^4.67.1"
 llm-project-summarizer = "llm_project_summarizer.cli:main"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"
 black = "^24.10.0"
 isort = "^5.13.2"
 mypy = "^1.14.0"
 pylint = "^3.3.2"
+pyyaml = "^6.0.2"
+pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 pytest-mock = "^3.14.0"
-pyyaml = "^6.0.2"
 
 [build-system]
 requires = ["poetry-core"]
