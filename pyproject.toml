@@ -8,6 +8,33 @@ repository = "https://github.com/MuhamadYossry/llm-project-summarizer"
 keywords = ["llm"]
 license = "MIT"
 readme = "README.md"
+classifiers = [
+    # Environment
+    "Environment :: Console",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Pre-processors",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Documentation",
+    # AI/ML related - new suggestions for LLM context
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+]
 
 [tool.poetry.dependencies]
 python = "^3.13"
