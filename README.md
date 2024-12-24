@@ -124,13 +124,13 @@ will output into `summary.md`
 # Project Summary
 
 ## Project Architecture
-This is a Python project with the following structure:
+This is a project with the following structure:
 
 ### Package Structure
 
-#### llm_project_summarizer/__init__.py
+#### __init__.py
 
-#### llm_project_summarizer/cli.py
+#### cli.py
 
 Symbols:
 
@@ -145,7 +145,7 @@ Symbols:
 def main(project_path, output, exclude, config)
     Analyze and summarize a code project for LLM consumption.
 
-#### llm_project_summarizer/parsers/base.py
+#### parsers/base.py
 
 Symbols:
 
@@ -171,7 +171,7 @@ def can_parse(self, filename)
 def parse_file(self, filepath)
     Parses a file and returns its symbols
 
-#### llm_project_summarizer/parsers/go.py
+#### parsers/go.py
 
 Symbols:
 
@@ -200,7 +200,7 @@ Symbols:
 
   function: def parse_file(self, filepath)
 
-#### llm_project_summarizer/parsers/python.py
+#### parsers/python.py
 
 Symbols:
 
@@ -232,7 +232,7 @@ Symbols:
 
   function: def parse_file(self, filepath)
 
-#### llm_project_summarizer/summarizer.py
+#### summarizer.py
 
 Symbols:
 
@@ -241,139 +241,104 @@ Symbols:
 
   function: def __init__(self)
 
+  function: def _extract_dependencies(self, results)
+    Extract nodes and edges for the dependency graph.
+Returns:
+    - List of (node_id, display_name) tuples
+    - Set of (from_node, to_node) edges
+
+  function: def _generate_mermaid_graph(self, results)
+    Generate a properly formatted Mermaid dependency graph.
+
+  function: def _get_package_display_name(self, filepath, file_symbols)
+    Get a human-readable package name for display
+
+  function: def _sanitize_node_id(self, name)
+    Convert package name to valid Mermaid node ID.
+Removes special characters and ensures valid Mermaid ID format.
+
   function: def summarize_project(self, project_path, exclusions)
     Summarize all supported files in the project
 
   function: def write_summary(self, project_path, results, output_file)
     Write the project summary to a file
-
-#### tests/__init__.py
-
-#### tests/conftest.py
-
-Symbols:
-
-  function: @pytest.fixture
-def sample_go_file(tmp_path)
-    Create a sample Go file for testing
-
-  function: @pytest.fixture
-def sample_project(tmp_path)
-    Create a sample project structure
-
-  function: @pytest.fixture
-def sample_python_file(tmp_path)
-    Create a sample Python file for testing
-
-#### tests/test_cli.py
-
-Symbols:
-
-  function: def test_cli_basic_usage(sample_project)
-
-  function: def test_cli_custom_output(sample_project, tmp_path)
-
-  function: def test_cli_handles_config_file(sample_project, tmp_path)
-
-  function: def test_cli_invalid_project_path()
-
-  function: def test_cli_with_exclusions(sample_project)
-
-#### tests/test_parsers.py
-
-Symbols:
-
-  function: def test_go_parser_can_parse()
-
-  function: def test_go_parser_extracts_functions(sample_go_file)
-
-  function: def test_go_parser_extracts_imports(sample_go_file)
-
-  function: def test_go_parser_extracts_interfaces(sample_go_file)
-
-  function: def test_go_parser_extracts_package(sample_go_file)
-
-  function: def test_go_parser_extracts_structs(sample_go_file)
-
-  function: def test_python_parser_can_parse()
-
-  function: def test_python_parser_extracts_classes(sample_python_file)
-
-  function: def test_python_parser_extracts_functions(sample_python_file)
-
-  function: def test_python_parser_extracts_imports(sample_python_file)
-
-  function: def test_python_parser_handles_invalid_file(tmp_path)
-
-#### tests/test_summarizer.py
-
-Symbols:
-
-  function: def test_summarizer_generates_mermaid_diagram(sample_project, tmp_path)
-
-  function: def test_summarizer_handles_empty_project(tmp_path)
-
-  function: def test_summarizer_processes_project(sample_project)
-
-  function: def test_summarizer_respects_exclusions(sample_project)
-
-  function: def test_summarizer_writes_summary(sample_project, tmp_path)
 ```
 And the mermaid dependices graph
 ```mermaid
-graph TD
-    llm_project_summarizer-->click
-    llm_project_summarizer-->logging
-    llm_project_summarizer-->yaml
-    llm_project_summarizer-->pathlib.Path
-    llm_project_summarizer-->typing.Optional
-    llm_project_summarizer-->summarizer.ProjectSummarizer
-    llm_project_summarizer-->os
-    llm_project_summarizer-->logging
-    llm_project_summarizer-->typing.Dict
-    llm_project_summarizer-->typing.List
-    llm_project_summarizer-->typing.Optional
-    llm_project_summarizer-->parsers.base.FileSymbols
-    llm_project_summarizer-->parsers.go.GoParser
-    llm_project_summarizer-->parsers.python.PythonParser
-    parsers-->ast
-    parsers-->logging
-    parsers-->typing.List
-    parsers-->typing.Set
-    parsers-->typing.Optional
-    parsers-->typing.Any
-    parsers-->base.LanguageParser
-    parsers-->base.FileSymbols
-    parsers-->base.CodeSymbol
-    parsers-->re
-    parsers-->typing.List
-    parsers-->typing.Optional
-    parsers-->typing.Match
-    parsers-->base.LanguageParser
-    parsers-->base.FileSymbols
-    parsers-->base.CodeSymbol
-    parsers-->abc.ABC
-    parsers-->abc.abstractmethod
-    parsers-->dataclasses.dataclass
-    parsers-->dataclasses.field
-    parsers-->typing.List
-    parsers-->typing.Optional
-    parsers-->typing.Set
-    tests-->os
-    tests-->pytest
-    tests-->pathlib.Path
-    tests-->pytest
-    tests-->llm_project_summarizer.parsers.go.GoParser
-    tests-->llm_project_summarizer.parsers.python.PythonParser
-    tests-->llm_project_summarizer.parsers.base.CodeSymbol
-    tests-->llm_project_summarizer.parsers.base.FileSymbols
-    tests-->os
-    tests-->pytest
-    tests-->pathlib.Path
-    tests-->llm_project_summarizer.summarizer.ProjectSummarizer
-    tests-->pytest
-    tests-->click.testing.CliRunner
-    tests-->llm_project_summarizer.cli.main
+graph LR;
+    %% Nodes
+    llm_project_summarizer___init__["llm_project_summarizer/__init__"];
+    llm_project_summarizer_cli["llm_project_summarizer/cli"];
+    llm_project_summarizer_summarizer["llm_project_summarizer/summarizer"];
+    parsers_python["parsers/python"];
+    parsers_go["parsers/go"];
+    parsers_base["parsers/base"];
+    click["click"];
+    logging["logging"];
+    yaml["yaml"];
+    pathlib_Path["pathlib.Path"];
+    typing_Optional["typing.Optional"];
+    summarizer_ProjectSummarizer["summarizer.ProjectSummarizer"];
+    os["os"];
+    re["re"];
+    typing_Dict["typing.Dict"];
+    typing_List["typing.List"];
+    typing_Set["typing.Set"];
+    typing_Tuple["typing.Tuple"];
+    parsers_base_FileSymbols["parsers.base.FileSymbols"];
+    parsers_go_GoParser["parsers.go.GoParser"];
+    parsers_python_PythonParser["parsers.python.PythonParser"];
+    ast["ast"];
+    typing_Any["typing.Any"];
+    base_LanguageParser["base.LanguageParser"];
+    base_FileSymbols["base.FileSymbols"];
+    base_CodeSymbol["base.CodeSymbol"];
+    typing_Match["typing.Match"];
+    abc_ABC["abc.ABC"];
+    abc_abstractmethod["abc.abstractmethod"];
+    dataclasses_dataclass["dataclasses.dataclass"];
+    dataclasses_field["dataclasses.field"];
+    %% Dependencies
+    llm_project_summarizer_cli --> click;
+    llm_project_summarizer_cli --> logging;
+    llm_project_summarizer_cli --> pathlib_Path;
+    llm_project_summarizer_cli --> summarizer_ProjectSummarizer;
+    llm_project_summarizer_cli --> typing_Optional;
+    llm_project_summarizer_cli --> yaml;
+    llm_project_summarizer_summarizer --> logging;
+    llm_project_summarizer_summarizer --> os;
+    llm_project_summarizer_summarizer --> parsers_base_FileSymbols;
+    llm_project_summarizer_summarizer --> parsers_go_GoParser;
+    llm_project_summarizer_summarizer --> parsers_python_PythonParser;
+    llm_project_summarizer_summarizer --> re;
+    llm_project_summarizer_summarizer --> typing_Dict;
+    llm_project_summarizer_summarizer --> typing_List;
+    llm_project_summarizer_summarizer --> typing_Optional;
+    llm_project_summarizer_summarizer --> typing_Set;
+    llm_project_summarizer_summarizer --> typing_Tuple;
+    parsers_base --> abc_ABC;
+    parsers_base --> abc_abstractmethod;
+    parsers_base --> dataclasses_dataclass;
+    parsers_base --> dataclasses_field;
+    parsers_base --> typing_List;
+    parsers_base --> typing_Optional;
+    parsers_base --> typing_Set;
+    parsers_go --> base_CodeSymbol;
+    parsers_go --> base_FileSymbols;
+    parsers_go --> base_LanguageParser;
+    parsers_go --> re;
+    parsers_go --> typing_List;
+    parsers_go --> typing_Match;
+    parsers_go --> typing_Optional;
+    parsers_python --> ast;
+    parsers_python --> base_CodeSymbol;
+    parsers_python --> base_FileSymbols;
+    parsers_python --> base_LanguageParser;
+    parsers_python --> logging;
+    parsers_python --> typing_Any;
+    parsers_python --> typing_List;
+    parsers_python --> typing_Optional;
+    parsers_python --> typing_Set;
 ```
 Running it against a Go project
 `llm-project-summarizer pdf-form-service -o summary.md`
@@ -447,36 +412,58 @@ Symbols:
 ```
 With the mermaid dependices graph
 ```mermaid
-graph TD
-    main-->fmt
-    main-->log
-    main-->strings
-    main-->bytes
-    main-->net/http
-    main-->encoding/json
-    main-->github.com/pdfcpu/pdfcpu/pkg/api
-    main-->github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model
-    main-->pdf-form-service/internal/file_utils
-    main-->encoding/json
-    main-->io/ioutil
-    main-->net/http
-    main-->net/http/httptest
-    main-->os
-    main-->strings
-    main-->testing
-    file_utils-->fmt
-    file_utils-->os
-    file_utils-->time
-    file_utils-->fmt
-    file_utils-->os
-    file_utils-->time
-    file_utils-->context
-    file_utils-->log
-    file_utils-->path/filepath
-    file_utils-->net/url
-    file_utils-->github.com/minio/minio-go/v7
-    file_utils-->github.com/minio/minio-go/v7/pkg/credentials
-    templates-->json
+graph LR;
+    %% Nodes
+    main["main"];
+    main["main"];
+    file_utils["file_utils"];
+    file_utils["file_utils"];
+    templates_gg["templates/gg"];
+    templates_field_description_filler["templates/field_description_filler"];
+    fmt["fmt"];
+    log["log"];
+    strings["strings"];
+    bytes["bytes"];
+    net_http["net/http"];
+    encoding_json["encoding/json"];
+    github_com_pdfcpu_pdfcpu_pkg_api["github.com/pdfcpu/pdfcpu/pkg/api"];
+    github_com_pdfcpu_pdfcpu_pkg_pdfcpu_model["github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"];
+    pdf_form_service_internal_file_utils["pdf-form-service/internal/file_utils"];
+    io_ioutil["io/ioutil"];
+    net_http_httptest["net/http/httptest"];
+    os["os"];
+    testing["testing"];
+    time["time"];
+    context["context"];
+    path_filepath["path/filepath"];
+    net_url["net/url"];
+    github_com_minio_minio_go_v7["github.com/minio/minio-go/v7"];
+    github_com_minio_minio_go_v7_pkg_credentials["github.com/minio/minio-go/v7/pkg/credentials"];
+    json["json"];
+    %% Dependencies
+    file_utils --> context;
+    file_utils --> fmt;
+    file_utils --> github_com_minio_minio_go_v7;
+    file_utils --> github_com_minio_minio_go_v7_pkg_credentials;
+    file_utils --> log;
+    file_utils --> net_url;
+    file_utils --> os;
+    file_utils --> path_filepath;
+    file_utils --> time;
+    main --> bytes;
+    main --> encoding_json;
+    main --> fmt;
+    main --> github_com_pdfcpu_pdfcpu_pkg_api;
+    main --> github_com_pdfcpu_pdfcpu_pkg_pdfcpu_model;
+    main --> io_ioutil;
+    main --> log;
+    main --> net_http;
+    main --> net_http_httptest;
+    main --> os;
+    main --> pdf_form_service_internal_file_utils;
+    main --> strings;
+    main --> testing;
+    templates_gg --> json;
 ```
 
 
