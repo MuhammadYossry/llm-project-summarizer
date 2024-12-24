@@ -43,7 +43,9 @@ jobs:
           
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry install --with=dev
+        run: |
+          poetry lock --no-update
+          poetry install --with=dev
         
       - name: Run tests with coverage
         run: |
